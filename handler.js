@@ -10,7 +10,7 @@ const prerendercloud = require("prerendercloud");
 
 const origSet = prerendercloud.set;
 let cachedOptions = {};
-prerendercloud.set = function(optName, val) {
+prerendercloud.set = function (optName, val) {
   origSet.apply(undefined, arguments);
   cachedOptions[optName] = val;
 };
@@ -42,20 +42,20 @@ const resetPrerenderCloud = () => {
   //    or if you don't have one, then the CloudFront distribution URL (something like d1pxreml448ujs.cloudfront.net).
   //    Note, setting this config option shouldn't be necessary
   //    example value: example.com or d1pxreml448ujs.cloudfront.net (don't include the protocol)
-  // prerendercloud.set("host", "");
+  prerendercloud.set("host", "d78bmddf0f1su.cloudfront.net");
 
   // 4. removeTrailingSlash (recommended)
   //    Removes trailing slash from URLs to increase prerender.cloud server cache hit rate
   //    the only reason not to enable this is if you use "strict routing"
   //    that is, you treat /docs/ differently than /docs (trailing slash) which is rare
-  // prerendercloud.set("removeTrailingSlash", true);
+  prerendercloud.set("removeTrailingSlash", true);
 
   // 5. whitelistQueryParams (recommended)
   //    improves cache hit rate by dropping query params not in the whitelist
   //    must be a function that returns null or array
   //    * default (null) preserves all query params
   //    * empty array drops all query params
-  // prerendercloud.set("whitelistQueryParams", req => ["page"]);
+  prerendercloud.set("whitelistQueryParams", (req) => ["seo"]);
 
   // 6. botsOnly
   //    generally not recommended due to potential google SEO cloaking penalties no one fully understands
@@ -64,7 +64,22 @@ const resetPrerenderCloud = () => {
   // 7. whitelistUserAgents
   //    specify your own list of bots
   //    useful when you only care about open graph previews (in which case, metaOnly also makes sense)
-  // prerendercloud.set('whitelistUserAgents', ['twitterbot', 'slackbot', 'facebookexternalhit']);
+  prerendercloud.set("whitelistUserAgents", [
+    "Googlebot",
+    "Twitterbot",
+    "Slackbot",
+    "Slack-ImgProxy",
+    "LinkedInBot",
+    "Bingbot",
+    "facebookexternalhit",
+    "Facebot",
+    "WhatsApp",
+    "Pinterestbot",
+    "line-poker",
+    "Linebot",
+    "line-bot",
+    "line/bot-sdk",
+  ]);
 
   // 8. metaOnly
   //    only prerender the <title> and <meta> tags in the <head> section. The returned HTML payload will otherwise be unmodified.
@@ -92,7 +107,13 @@ const resetPrerenderCloud = () => {
   //    the viewer-request function can't see what files exist on origin so you may need this
   //    if you have HTML files that should not be pre-rendered (e.g. google/apple/fb verification files)
   //    trailing * works as a wildcard
-  // prerendercloud.set('blacklistPaths', req => ['/facebook-domain-verification.html', '/signin/*', '/google*']);
+  prerendercloud.set("blacklistPaths", (req) => [
+    "/about.html",
+    "/company-policy.html",
+    "/customer-service.html",
+    "/member-policy.html",
+    "/.well-known/apple-app-site-association",
+  ]);
 
   // 11. removeScriptsTag (not recommended)
   //    Removes all scripts/JS, useful if:
@@ -172,12 +193,12 @@ module.exports.originRequest = (event, context, callback) => {
   if (shouldPrerender) {
     console.log("originRequest calling service.prerender.cloud:", {
       host: req.headers.host,
-      url: req.url
+      url: req.url,
     });
   } else {
     console.log("originRequest calling next", {
       host: req.headers.host,
-      url: req.url
+      url: req.url,
     });
   }
 
@@ -198,7 +219,7 @@ module.exports.originResponse = (event, context, callback) => {
       </html>
     `;
     cloudFrontResponse.headers["content-type"] = [
-      { key: "Content-Type", value: "text/html" }
+      { key: "Content-Type", value: "text/html" },
     ];
   }
 
@@ -207,7 +228,7 @@ module.exports.originResponse = (event, context, callback) => {
 
 // for tests
 var prerenderCloudOption;
-module.exports.setPrerenderCloudOption = cb => {
+module.exports.setPrerenderCloudOption = (cb) => {
   prerenderCloudOption = cb;
 };
 
