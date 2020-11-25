@@ -1,7 +1,6 @@
-
 # see limits on Lambda@Edge http://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/cloudfront-limits.html#limits-lambda-at-edge
 
-service: Lambda-Edge-Prerendercloud
+service: Ada-test-Lambda-Edge-Prerendercloud
 
 # You can pin your service to only deploy with a specific Serverless version
 # Check out our docs for more details
@@ -23,18 +22,18 @@ provider:
 
 # you can add packaging information here
 package:
-#  include:
-#    - include-me.js
-#    - include-me-dir/**
- exclude:
-   - spec/**
-   - package-lock.json
-   - yarn.lock
-   - README.md
-   - deploy.js
-   - create-invalidation.js
-   - LICENSE
-   - Makefile
+  #  include:
+  #    - include-me.js
+  #    - include-me-dir/**
+  exclude:
+    - spec/**
+    - package-lock.json
+    - yarn.lock
+    - README.md
+    - deploy.js
+    - create-invalidation.js
+    - LICENSE
+    - Makefile
 
 functions:
   viewerRequest:
@@ -56,13 +55,13 @@ resources:
       Properties:
         AssumeRolePolicyDocument:
           Statement:
-          - Effect: Allow
-            Principal:
-              Service:
-                - edgelambda.amazonaws.com
-                - lambda.amazonaws.com
-            Action:
-            - sts:AssumeRole
+            - Effect: Allow
+              Principal:
+                Service:
+                  - edgelambda.amazonaws.com
+                  - lambda.amazonaws.com
+              Action:
+                - sts:AssumeRole
         Policies:
           - PolicyName: LambdaEdgeExecutionRole
             PolicyDocument:

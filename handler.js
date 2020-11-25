@@ -42,7 +42,7 @@ const resetPrerenderCloud = () => {
   //    or if you don't have one, then the CloudFront distribution URL (something like d1pxreml448ujs.cloudfront.net).
   //    Note, setting this config option shouldn't be necessary
   //    example value: example.com or d1pxreml448ujs.cloudfront.net (don't include the protocol)
-  prerendercloud.set("host", "d78bmddf0f1su.cloudfront.net");
+  prerendercloud.set("host", "ada-test.urmart.com");
 
   // 4. removeTrailingSlash (recommended)
   //    Removes trailing slash from URLs to increase prerender.cloud server cache hit rate
